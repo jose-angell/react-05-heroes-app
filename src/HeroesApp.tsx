@@ -5,7 +5,7 @@ import { appRouter } from './router/app.router';
 export const HeroesApp = () => {
   return (
     <>
-        <RouterProvider router={appRouter}/>
+        <RouterProvider router={appRouter} />
     </>
-  )
-}
+  );
+};
