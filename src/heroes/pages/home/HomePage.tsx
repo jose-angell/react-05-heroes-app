@@ -6,6 +6,7 @@ import { HeroGrid } from "@/heroes/components/HeroGrid"
 import { TabsContent } from "@radix-ui/react-tabs"
 import { useState } from "react"
 import { CustomPagination } from "@/components/custom/CustomPagination"
+import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs"
 
 export const HomePage = () => {
   const [activeTab, setActiveTab] = useState<"all" | "favorites" | "heroes" | "villains"> ("all");
@@ -17,7 +18,7 @@ return (
         title="Universo de SuperHeroes"
         description="Descubre, explora y administra super heroes y villanos"
         />
-
+        <CustomBreadcrumbs currentPage="Super Héroes" />
         {/* Stats Dashboard */}
         <HeroStats/>
 
