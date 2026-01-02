@@ -13,11 +13,12 @@ import { useQuery } from "@tanstack/react-query"
 export const HomePage = () => {
   const [activeTab, setActiveTab] = useState<"all" | "favorites" | "heroes" | "villains"> ("all");
   
-  const {data} = useQuery({
+  const {data: heroesResponse} = useQuery({
     queryKey:['heroes'],
     queryFn: () => getHeroesByPageAction(),
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
+
   // useEffect(() => {
   //   getHeroesByPage().then(() => {
       
@@ -55,19 +56,19 @@ return (
           </TabsList>
           <TabsContent value="all">
             <h1>todos los personajes</h1>
-            <HeroGrid/>
+            <HeroGrid heroes={heroesResponse?.heroes ?? []}/>
           </TabsContent>
           <TabsContent value="favorites">
             <h1>Favoritos</h1>
-            <HeroGrid/>
+            <HeroGrid heroes={[]}/>
           </TabsContent>
           <TabsContent value="heroes">
             <h1>Heroes</h1>
-            <HeroGrid/>
+            <HeroGrid heroes={[]}/>
           </TabsContent>
           <TabsContent value="villains">
             <h1>Villanos</h1>
-            <HeroGrid/>
+            <HeroGrid heroes={[]}/>
           </TabsContent>
         </Tabs>
 
