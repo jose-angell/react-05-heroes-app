@@ -10,6 +10,7 @@ import { getHeroesByPageAction } from "@/heroes/actions/get-heroes-by-page.actio
 import { useQuery } from "@tanstack/react-query"
 import { useSearchParams } from "react-router"
 import { useMemo } from "react"
+import { getSummaryAction } from "@/heroes/actions/get-summary.action"
 
 export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,7 +29,11 @@ export const HomePage = () => {
     queryFn: () => getHeroesByPageAction(+page, +limit),
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
-
+  const {data: summary} = useQuery({
+    queryKey: ['summary-information'],
+    queryFn: getSummaryAction, // se manda la funcion como referencia
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  })
   // useEffect(() => {
   //   getHeroesByPage().then(() => {
       
@@ -60,7 +65,7 @@ return (
               prev.set('tab', 'all');
               return prev;
             })}
-            >All Characters (16)</TabsTrigger>
+            >All Characters ({summary?.totalHeroes})</TabsTrigger>
             <TabsTrigger value="favorites" className="flex items-center gap-2" 
             onClick={() => setSearchParams((prev) => {
               prev.set('tab', 'favorites');
@@ -71,11 +76,11 @@ return (
             <TabsTrigger value="heroes" onClick={() => setSearchParams((prev) => {
               prev.set('tab', 'heroes');
               return prev;
-            })}>Heroes (12)</TabsTrigger>
+            })}>Heroes ({summary?.heroCount})</TabsTrigger>
             <TabsTrigger value="villains" onClick={() => setSearchParams((prev) => {
               prev.set('tab', 'villains');
               return prev;
-            })}>Villains (2)</TabsTrigger>
+            })}>Villains ({summary?.villainCount})</TabsTrigger>
           </TabsList>
           <TabsContent value="all">
             <h1>todos los personajes</h1>
