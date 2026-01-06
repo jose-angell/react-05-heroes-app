@@ -65,13 +65,13 @@ return (
             </TabsTrigger>
             <TabsTrigger value="heroes" onClick={() => setSearchParams((prev) => {
               prev.set('tab', 'heroes');
-              prev.set('category', 'heroes');
+              prev.set('category', 'Hero');
               prev.set('page', '1');
               return prev;
             })}>Heroes ({summary?.heroCount})</TabsTrigger>
             <TabsTrigger value="villains" onClick={() => setSearchParams((prev) => {
               prev.set('tab', 'villains');
-              prev.set('category', 'villains');
+              prev.set('category', 'Villain');
               prev.set('page', '1');
               return prev;
             })}>Villains ({summary?.villainCount})</TabsTrigger>
