@@ -7,9 +7,10 @@ import { TabsContent } from "@radix-ui/react-tabs"
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs"
 import { useSearchParams } from "react-router"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 import { useHeroSummary } from "@/heroes/hooks/useHeroSummary"
 import { usePaginatedHero } from "@/heroes/hooks/usePaginatedHero"
+import { FavoriteHerocontext } from "@/heroes/context/FavoriteHerocontext"
 
 export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,6 +28,7 @@ export const HomePage = () => {
 
   const {data: heroesResponse} = usePaginatedHero(+page, +limit, category);
   const {data: summary} = useHeroSummary();
+  const {favoriteCount, favorites} = use(FavoriteHerocontext);
 return (
   <>
       <>
@@ -61,7 +63,7 @@ return (
               prev.set('tab', 'favorites');
               return prev;
             })}>
-              Favorites (3)
+             Favorites {favoriteCount}
             </TabsTrigger>
             <TabsTrigger value="heroes" onClick={() => setSearchParams((prev) => {
               prev.set('tab', 'heroes');
@@ -82,7 +84,7 @@ return (
           </TabsContent>
           <TabsContent value="favorites">
             <h1>Favoritos</h1>
-            <HeroGrid heroes={[]}/>
+            <HeroGrid heroes={favorites}/>
           </TabsContent>
           <TabsContent value="heroes">
             <h1>Heroes</h1>
@@ -98,7 +100,9 @@ return (
         {/* <HeroGrid/> */}
 
         {/* Pagination */}
-       <CustomPagination totalPages={heroesResponse?.pages ?? 1}/>
+        {selectTab !== 'favorites' && (
+            <CustomPagination totalPages={heroesResponse?.pages ?? 1}/>
+          )}
       </>
     </>
   )
