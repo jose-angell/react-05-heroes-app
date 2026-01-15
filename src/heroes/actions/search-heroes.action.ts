@@ -9,26 +9,28 @@ interface Options {
  category?: string;
  universe?: string;
  status?: string;
- strenght?: string;   
+ strength?: string;   
 }
 
 export const searchHeroesAction = async (options: Options = {}) => {
-    const {name, team, category, universe, status, strenght} = options;
-    if(!name && !team && !category && !universe && !status && !strenght){
+    const {name, team, category, universe, status, strength} = options;
+    if(!name && !team && !category && !universe && !status && !strength){
         return [];
     }
-    const {data} = await heroApi.get<Hero>(`/search`, {
+    const {data} = await heroApi.get<Hero[]>(`/search`, {
         params: {
             name,
             team,
             category,
             universe,
             status,
-            strenght
+            strength
         }
     });
-    return {
-        ...data,
-        image: `${BASE_URL}/images/${data.image}`
-    }
+    return data.map((hero) => ({
+        ...hero,
+        image: `${BASE_URL}/images/${hero.image}`
+    }))
+        
+    
 }

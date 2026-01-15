@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
@@ -9,12 +9,13 @@ import { useSearchParams } from 'react-router'
 export const SearchControls = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
+
  const activeAccordion = searchParams.get('active-accordion') ?? ''; 
  const SelectedStrength = Number(searchParams.get('strength') ?? '0'); 
 
  const sertQueryParams = (name: string, value: string) => {
    setSearchParams((prev) => {
-       prev.set('name', value);
+       prev.set(name, value);
        return prev;
      });
  }
@@ -22,10 +23,6 @@ export const SearchControls = () => {
     if(event.key == 'Enter'){
       const value = inputRef.current?.value ?? '';
       sertQueryParams('name', value);
-      //   setSearchParams((prev) => {
-    //   prev.set('name', value);
-    //   return prev;
-    // });
     }
   }
 
@@ -78,9 +75,9 @@ export const SearchControls = () => {
             </Button>
           </div>
         </div>
-        <Accordion type="single" collapsible value="advance-filters">
+        <Accordion type="single" collapsible value={activeAccordion}>
           <AccordionItem value="advance-filters">
-            <AccordionTrigger>Filtros avanzados</AccordionTrigger>
+            {/* <AccordionTrigger>Filtros avanzados</AccordionTrigger> */}
             <AccordionContent>
               <div className="bg-white rounded-lg p-6 mb-8 shadow-sm border">
                 <div className="flex justify-between items-center mb-4">
