@@ -43,8 +43,32 @@ describe('getHeroesByPageAction', () => {
         }
         heroesApiMock.onGet('/').reply(200, responseObject);
         heroesApiMock.resetHistory();
-        await getHeroesByPageAction('1' as unknown as number);
-        const request = heroesApiMock.history;
-
+        await getHeroesByPageAction('asg' as unknown as number);
+        const params = heroesApiMock.history.get[0];
+        expect(params.params).toStrictEqual({limit:6, offset: 0, category: 'all'});
+    });
+    test('should return the correct heroes when page is string number', async () => {
+        const responseObject = {
+            total: 10,
+            pages: 2,
+            heroes: []
+        }
+        heroesApiMock.onGet('/').reply(200, responseObject);
+        heroesApiMock.resetHistory();
+        await getHeroesByPageAction('5' as unknown as number);
+        const params = heroesApiMock.history.get[0];
+        expect(params.params).toStrictEqual({limit:6, offset: 24, category: 'all'})
+    });
+    test('should call the api with correct params', async () => {
+        const responseObject = {
+            total: 10,
+            pages: 2,
+            heroes: []
+        }
+        heroesApiMock.onGet('/').reply(200, responseObject);
+        heroesApiMock.resetHistory();
+        await getHeroesByPageAction(2, 10, "heroes");
+        const params = heroesApiMock.history.get[0];
+        expect(params.params).toStrictEqual({limit:10, offset: 10, category: 'heroes'})
     });
 });
