@@ -62,4 +62,18 @@ describe('useHeroSummary', () => {
         expect(result.current.isError).toBe(false);
         expect(result.current.data).toBeDefined();
     })
+    test('should return error state when API call fails', async () => {
+        const mockError = new Error('Failed to fetch summary');
+        mockGetSummaryAction.mockRejectedValue(mockError);
+        const {result} = renderHook(() => useHeroSummary(), {
+                    wrapper: tanStackCustomProvider(),
+                });
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true);
+        });
+        expect(result.current.error).toBeDefined();
+        expect(result.current.isLoading).toBe(false);
+        expect(mockGetSummaryAction).toHaveBeenCalled();
+
+    })
 });
